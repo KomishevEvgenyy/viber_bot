@@ -22,5 +22,6 @@ from . import views
 
 urlpatterns = [
     path('callback/', views.callback),# в URL указываем путь, это hi/(localhost:8000/hi) далее указываем на .py файл(views) и через точку указываем на имя функции в этом файле (views)
-
+    path('set_webhook/', views.set_webhook),
+    path('unset_webhook/', views.unset_webhook),
 ]

@@ -1,3 +1,17 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+class User(AbstractUser):
+    job_position = models.ForeignKey('JobPosition', on_delete=models.PROTECT, null=True, blank=True, related_name= "+")
+
+
+class JobPosition(models.Model): #базовая модель gjango
+    name = models.CharField(max_length=256)
+    def __str__(self):
+        return f'{self.name}'
+    def __str__(self):
+        return f'{self.phone_number}':
+        {self.viber_id}
+    #class Meta():
+        #pass
