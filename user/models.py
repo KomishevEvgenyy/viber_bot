@@ -11,7 +11,7 @@ class JobPosition(models.Model): #базовая модель gjango
     def __str__(self):
         return f'{self.name}'
     def __str__(self):
-        return f'{self.phone_number}':
+        return f'{self.phone_number}'
         {self.viber_id}
     #class Meta():
         #pass
