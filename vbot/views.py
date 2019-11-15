@@ -1,7 +1,7 @@
 #то что мы видим на сайте при запуске хоста
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
-from viberbot.api.messages import TextMessage, PictureMessage
+from viberbot.api.messages import TextMessage, PictureMessage, KeyboardMessage, ContactMessage
 
 from viberbot.api.viber_requests import *
 from .models import ViberUser
@@ -24,6 +24,7 @@ viber = Api(BotConfiguration(
 def callback(request):
     if request.method == 'POST':
         viber_request = viber.parse_request(request.body)
+        print(viber_request)
         if isinstance(viber_request, ViberMessageRequest): # фильтр подписки и отписки от viber
             #viber.send_messages(viber_request.sender.id, [TextMessage(text = "Вы подписаны на паблик")])
             #print(viber_request, ViberMessageRequest)
@@ -31,12 +32,38 @@ def callback(request):
                 viber.send_messages(viber_request.sender.id, [TextMessage(text = 'Это текст')])
             elif isinstance (viber_request.message, PictureMessage): # фильтр картинки, выводит на консоль адрес картинки и отправляет сообщение, что это картинка
                 viber.send_messages(viber_request.sender.id, [TextMessage(text = 'Это картинка')])
+            elif isinstance(viber_request.message, ContactMessage):
+                vuser = ViberUser.objects.get(viber_id=viber_request.sender.id)
+                vuser.phone_number = viber_request.message.contact.phone_number
+                vuser.save()
         elif isinstance(viber_request, ViberSubscribedRequest):
-            ViberUser.objects.update_or_create(viber_id = viber_request.user.id, defaults={'is_active': True,
+
+            user,create = ViberUser.objects.update_or_create(viber_id = viber_request.user.id, defaults={'is_active': True,
                                             'name': viber_request.user.name,
                                             'country': viber_request.user.country,
-                                            #'is_active': viber_request.user.is_active,
                                             'language': viber_request.user.language})
+            if user.phone_number is None:
+                SAMPLE_KEYBOARD = {
+                    "Type": "keyboard",
+                    "Buttons": [
+                        {
+                        "Columns": 6,
+                        "Rows": 2,
+                        "BgLoop": True,
+                        "ActionType": "share-phone",
+                        "ActionBody": "This will be sent to your bot in a callback",
+                        "ReplyType": "message",
+                        "Text": "<font color = ”# 7F00FF”> Push me! </ font>"
+                        }
+                        ]
+                }
+                text_message = TextMessage(text = 'Номер принят')
+                keyboard_message = KeyboardMessage(tracking_data='tracking_data', keyboard=SAMPLE_KEYBOARD, min_api_version=3)
+                viber.send_messages(user.viber_id, [text_message, keyboard_message])
+                    #vuser = ViberUser.objects.get(id=request.GET.get('user'))
+                    #viber.send_messages(vuser.viber_id, [TextMessage(text=request.GET.get('text')),
+                    #KeyboardMessage(tracking_data='tracking_data', keyboard=SAMPLE_KEYBOARD, min_api_version=3)])
+
         elif isinstance(viber_request, ViberUnsubscribedRequest):
             ViberUser.objects.update_or_create (viber_id=viber_request.user_id, defaults={'is_active': False})
             #elif isinstance (viber_request.message, PictureMessage): # доделать. должно выводить текс, что это видео
@@ -44,6 +71,27 @@ def callback(request):
         #if send_messages == True:
             #with open('massage_user.txt', 'br') as send_messages:
     return HttpResponse(status=200)
+
+def send_message_for_user(request):
+    SAMPLE_KEYBOARD = {
+        "Type": "keyboard",
+        "Buttons": [
+        	{
+        	"Columns": 6,
+        	"Rows": 2,
+        	"BgLoop": True,
+        	"ActionType": "reply",
+        	"ActionBody": "This will be sent to your bot in a callback",
+        	"ReplyType": "message",
+        	"Text": "<font color = ”# 7F00FF”> Push me! </ font>"
+        	}
+            ]
+        }
+    vuser = ViberUser.objects.get(id=request.GET.get('user'))
+    viber.send_messages(vuser.viber_id, [TextMessage(text=request.GET.get('text')),
+    KeyboardMessage(tracking_data='tracking_data', keyboard=SAMPLE_KEYBOARD, min_api_version=3)])
+    return HttpResponse(status = 200)
+
 
 @csrf_exempt
 def set_webhook(request):

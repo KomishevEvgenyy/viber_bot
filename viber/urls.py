@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('vbot/', include('vbot.urls')),
     path('user/', include('user.urls')),
+    
 
 ]
