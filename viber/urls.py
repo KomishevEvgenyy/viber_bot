@@ -21,9 +21,10 @@ from django.urls import path, include
 from vbot import views
 
 urlpatterns = [
+    path('grappelli', include('grappelli.urls')),
     path('admin/', admin.site.urls),
     path('vbot/', include('vbot.urls')),
     path('user/', include('user.urls')),
-    
+
 
 ]
