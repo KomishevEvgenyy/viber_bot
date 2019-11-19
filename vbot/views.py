@@ -2,15 +2,14 @@
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
 from viberbot.api.messages import TextMessage, PictureMessage, KeyboardMessage, ContactMessage
-
 from viberbot.api.viber_requests import *
-from .models import ViberUser
-
 
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+
+from .models import ViberUser
 
 
 
@@ -53,13 +52,16 @@ def callback(request):
                         "ActionType": "share-phone",
                         "ActionBody": "This will be sent to your bot in a callback",
                         "ReplyType": "message",
-                        "Text": "<font color = ”# 7F00FF”> Push me! </ font>"
+                        "Text": "<font color = ”# 7F00FF”> Push me! < font>"
                         }
                         ]
                 }
                 text_message = TextMessage(text = 'Номер принят')
                 keyboard_message = KeyboardMessage(tracking_data='tracking_data', keyboard=SAMPLE_KEYBOARD, min_api_version=3)
                 viber.send_messages(user.viber_id, [text_message, keyboard_message])
+
+                #contact = Contact(name="Viber user", phone_number="+0015648979", avatar="http://link.to.avatar")
+            #    contact_message = ContactMessage(contact=contact)
                     #vuser = ViberUser.objects.get(id=request.GET.get('user'))
                     #viber.send_messages(vuser.viber_id, [TextMessage(text=request.GET.get('text')),
                     #KeyboardMessage(tracking_data='tracking_data', keyboard=SAMPLE_KEYBOARD, min_api_version=3)])

@@ -25,7 +25,7 @@ SECRET_KEY = 'ii%$$1^c5mqfkk^16++hatho=0kiq#djz40^s@(inb3v(-3*8)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['4937ce76.ngrok.io', 'localhost']
+ALLOWED_HOSTS = ['0fe04a14.ngrok.io', 'localhost']
 
 
 # Application definition
@@ -105,7 +105,7 @@ AUTH_USER_MODEL = 'user.User'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
