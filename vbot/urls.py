@@ -18,11 +18,15 @@ from django.contrib import admin
 
 from django.urls import path, include
 
-from . import views
+from .views import ViberUserView, callback, set_webhook, unset_webhook, send_message_for_user, ViberUserListView, ViberUserCreate
+
 
 urlpatterns = [
-    path('callback/', views.callback),# в URL указываем путь, это hi/(localhost:8000/hi) далее указываем на .py файл(views) и через точку указываем на имя функции в этом файле (views)
-    path('set_webhook/', views.set_webhook),
-    path('unset_webhook/', views.unset_webhook),
-    path('send_message/', views.send_message_for_user)
+    path('callback/', callback),# в URL указываем путь, это hi/(localhost:8000/hi) далее указываем на .py файл(views) и через точку указываем на имя функции в этом файле (views)
+    path('set_webhook/', set_webhook),
+    path('unset_webhook/', unset_webhook),
+    path('send_message/', send_message_for_user),
+    path('hi/', ViberUserView.as_view()),
+    path('all/', ViberUserListView.as_view(), name='users_all'),
+    path('user/add', ViberUserCreate.as_view()),
 ]

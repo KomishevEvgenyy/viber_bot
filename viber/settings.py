@@ -25,7 +25,7 @@ SECRET_KEY = 'ii%$$1^c5mqfkk^16++hatho=0kiq#djz40^s@(inb3v(-3*8)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['6f5959f9.ngrok.io', 'localhost']
+ALLOWED_HOSTS = ['baf620b7.ngrok.io', 'localhost']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'vbot',
     'user',
+    'events',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'viber.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
