@@ -1,4 +1,6 @@
 #то что мы видим на сайте при запуске хоста
+from rest_framework import viewsets
+
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
 from viberbot.api.messages import TextMessage, PictureMessage, KeyboardMessage, ContactMessage
@@ -12,9 +14,11 @@ from django.conf import settings
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from .models import ViberUser
 from .utils import viber, registration
+from .serializers import ViberUserSerializer
 
 
 @csrf_exempt
@@ -131,6 +135,13 @@ class ViberUserDellView():
 
 def get_my_ticket():
     pass
+
+class ViberUserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = ViberUser.objects.filter(is_active=True)
+    serializer_class = ViberUserSerializer
 
 
 # Create your views here.

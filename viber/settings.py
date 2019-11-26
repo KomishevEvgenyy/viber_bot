@@ -25,7 +25,7 @@ SECRET_KEY = 'ii%$$1^c5mqfkk^16++hatho=0kiq#djz40^s@(inb3v(-3*8)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['baf620b7.ngrok.io', 'localhost']
+ALLOWED_HOSTS = ['dbc83b25.ngrok.io', 'localhost', '127.0.0.1:8000']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'vbot',
     'user',
     'events',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join('static')
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}

@@ -18,10 +18,14 @@ from django.contrib import admin
 
 from django.urls import path, include
 
-from .views import ViberUserView, callback, set_webhook, unset_webhook, send_message_for_user, ViberUserListView, ViberUserCreate
+from .views import ViberUserView, callback, set_webhook, unset_webhook, send_message_for_user, ViberUserListView, ViberUserCreate, ViberUserViewSet
+from rest_framework import routers
 
+router = routers.DefaultRouter()
+router.register(r'vusers', ViberUserViewSet, basename='ViberUser')
 
 urlpatterns = [
+    path('', include(router.urls)),
     path('callback/', callback),# в URL указываем путь, это hi/(localhost:8000/hi) далее указываем на .py файл(views) и через точку указываем на имя функции в этом файле (views)
     path('set_webhook/', set_webhook),
     path('unset_webhook/', unset_webhook),
@@ -29,4 +33,5 @@ urlpatterns = [
     path('hi/', ViberUserView.as_view()),
     path('all/', ViberUserListView.as_view(), name='users_all'),
     path('user/add', ViberUserCreate.as_view()),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
